@@ -7,4 +7,9 @@ Rails.application.routes.draw do
   devise_scope :user do
     get 'signup', to: 'devise/registrations#new'
   end
+
+  namespace :private do 
+    resources :conversations, only: [:create] 
+    resources :messages, only: [:index, :create]
+  end
 end
