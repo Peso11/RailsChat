@@ -1,5 +1,5 @@
 class Private::ConversationsController < ApplicationController
-    def create
+  def create
         recipient_id = User.find(params[:user_id])
         conversation = Private::Conversation.new(sender_id: current_user.id, 
                                                  recipient_id: recipient_id)
@@ -15,6 +15,16 @@ class Private::ConversationsController < ApplicationController
             format.js {render partial: 'layout/pages/fail'}
           end
         end
-      end
+    end
+      
+  private
 
+  def add_to_conversations
+        session[:private_conversations] ||= []
+        session[:private_conversations] << @conversation.id
+  end
+  
+  def already_added?
+    session[:private_conversations].include?(@conversation.id)
+  end
 end
